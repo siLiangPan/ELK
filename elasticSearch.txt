@@ -1,0 +1,127 @@
+http://192.168.2.142:9100/
+
+http://192.168.2.142:9200/
+http://192.168.2.143:9200/
+http://192.168.2.144:9200/
+
+elkmaster001
+elkmaster002
+elkmaster003
+
+查询参考文档
+https://www.cnblogs.com/yjf512/p/4897294.html
+
+
+
+Request URL:http://192.168.2.142:9200/.kibana/_search
+Request Method:POST
+
+
+# search 字段名区分大小写
+http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match_all": {}
+        }
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 10,
+  "_source": {
+    "includes": [
+      "collector",
+      "log_date",
+      "log_time",
+      "KHH",
+      "ip",
+      "mac",
+      "XT_MACHINEINFO"
+    ],
+    "excludes": []
+  },
+  "stored_fields": [
+    "collector",
+    "log_date",
+    "log_time",
+    "KHH",
+    "ip",
+    "mac"
+  ],
+  "sort": [
+    {"log_date": {"order": "desc"}},
+    {"log_time": {"order": "desc"}}
+  ],
+  "aggs": {}
+}
+
+
+
+"query": {
+    "term": {
+      "KHH": "1"
+    }
+  }
+  
+"query": {
+        "range" : {
+            "age" : {
+                "gte" : 10,
+                "lte" : 20,
+                "boost" : 2.0
+            }
+        }
+    }  
+
+# elasticsearch get mapping
+
+http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_mapping/
+
+
+# 数据类型
+https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
+
+
+# 同步mysql数据到ElasticSearch
+# 全量同步与增量同步
+
+
+go-mysql-elasticsearch
+https://zhuanlan.zhihu.com/p/25089443
+http://www.jianshu.com/p/96c7858b580f
+https://github.com/siddontang/go-mysql
+https://github.com/siddontang/go-mysql-elasticsearch
+
+142
+root      5015  4963  0 16:41 pts/2    00:00:00 /bin/sh /usr/local/mysql/bin/mysqld_safe
+mysql     5337  5015  1 16:41 pts/2    00:00:00 /usr/local/mysql/bin/mysqld --basedir=/usr/local/mysql --datadir=/home/mysql/data --plugin-dir=/usr/local/mysql/lib/plugin --user=mysql --log-error=/home/mysql/data/elkmaster.err --pid-file=/home/mysql/data/elkmaster.pid --socket=/var/lib/mysql/mysql.sock --port=3306
+
+
+
+"query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "log_date": {
+              "gte": "20171020",
+              "lte": "20171210"
+            }
+          }
+        },
+        {
+          "term": {
+            "KHH.keyword": "1"
+          }
+        }
+      ],
+      "must_not": [],
+      "should": []
+    }
+  }

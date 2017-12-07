@@ -1,0 +1,42 @@
+POST 
+http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
+# 按 log_date、XT_CLIVER 分组，查询count(1)、count(distinct KHH)
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {"log_date": {"gte": "20170820","lte": "20171210"}}}
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 0,
+  "_source": {
+    "includes": ["collector", "log_date", "log_time", "KHH", "ip", "mac", "XT_MACHINEINFO"],
+    "excludes": []
+  },
+  "stored_fields": ["collector", "log_date", "log_time", "KHH", "ip", "mac"],  
+  "aggs": {
+    "log_date": {
+      "terms": {
+        "field": "log_date"
+      },
+      "aggs": {
+        "xt_cliver": {
+          "terms": {
+            "field": "XT_CLIVER"
+          },
+              "aggs": {
+                "khh_cnt": {
+                  "cardinality": {
+                    "field": "KHH"
+                  }
+                }
+              }
+        }
+      }
+    }
+  }
+}

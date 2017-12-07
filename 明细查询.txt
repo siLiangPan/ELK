@@ -1,0 +1,118 @@
+﻿# search 字段名区分大小写
+POST
+http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {"log_date": {"gte": "20170820","lte": "20171210"}}},
+        {"terms": {"KHH.keyword": ["1", "13467000082"]}}
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 1000,
+  "_source": {
+    "includes": ["collector", "log_date", "log_time", "KHH", "ip", "mac", "XT_MACHINEINFO"],
+    "excludes": []
+  },
+  "stored_fields": ["collector", "log_date", "log_time", "KHH", "ip", "mac"],  
+  "sort": [
+    {"log_date": {"order": "desc"}},
+    {"log_time": {"order": "desc"}}
+  ],
+  "aggs": {}
+}
+
+
+=============================================================================
+"must": [
+        {"range": {"log_date": {"gte": "20170820","lte": "20171210"}}},
+        {"terms": {"KHH.keyword": ["1", "13467000082"]}},
+		{"terms": {"reserve_c.keyword": [""]}}
+      ],
+	  
+=============================================================================
+SELECT tags
+FROM posts
+WHERE tags IS NOT NULL;
+
+"query" : { 
+    "filtered" : { 
+      "filter" : { 
+        "exists" : { "field" : "tags" }}}}
+		
+=============================================================================
+
+
+
+=============================================================================
+SELECT tags
+FROM posts
+WHERE tags IS NULL;
+
+"query" : {
+        "filtered" : {
+            "filter": {
+                "missing" : { "field" : "tags" }
+            }
+        }
+    }		
+		
+		
+		
+		
+		
+=============================================================================
+ElasticSearch中Filter和Query的异同
+
+{
+  "query": { 
+    "bool": { 
+      "must": [
+        { "match": { "title":   "Search"        }}, 
+        { "match": { "content": "Elasticsearch" }}  
+      ],
+      "filter": [ 
+        { "term":  { "status": "published" }}, 
+        { "range": { "publish_date": { "gte": "2015-01-01" }}} 
+      ]
+    }
+  }
+}
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "gender": "F"
+          }
+        },
+        {
+          "match": {
+            "state": "PA"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "age": "39"
+          }
+        },
+        {
+          "range": {
+            "balance": {
+              "gte": "10000"
+            }
+          }
+        }
+      ]
+    }
+  }
+}		

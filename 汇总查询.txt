@@ -1,3 +1,6 @@
+# 聚合排序
+https://segmentfault.com/a/1190000004462048
+
 POST 
 http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
 # 按 log_date、XT_CLIVER 分组，查询count(1)、count(distinct KHH)
@@ -26,7 +29,11 @@ http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
       "aggs": {
         "xt_cliver": {
           "terms": {
-            "field": "XT_CLIVER"
+            "field": "XT_CLIVER",
+			"order": [
+				{"khh_cnt": "desc"}
+            ], 
+			"size": 10
           },
               "aggs": {
                 "khh_cnt": {

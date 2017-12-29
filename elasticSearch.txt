@@ -8,6 +8,11 @@ elkmaster001
 elkmaster002
 elkmaster003
 
+
+Kibana
+http://192.168.0.146:5601
+
+
 查询参考文档
 https://www.cnblogs.com/yjf512/p/4897294.html
 
@@ -80,7 +85,6 @@ http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
     }  
 
 # elasticsearch get mapping
-
 http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_mapping/
 
 
@@ -125,3 +129,34 @@ mysql     5337  5015  1 16:41 pts/2    00:00:00 /usr/local/mysql/bin/mysqld --ba
       "should": []
     }
   }
+  
+# 插件 和 集成
+https://www.elastic.co/guide/en/elasticsearch/plugins/5.2/index.html  
+# Elasticsearch之elasticsearch5.x 新特性
+https://www.cnblogs.com/zlslch/p/6619089.html
+  
+  
+# Elasticsearch Reference [6.0] » Modules » Scripting » Painless Scripting Language
+https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting-painless.html
+https://www.elastic.co/guide/en/elasticsearch/reference/5.0/modules-scripting.html
+# Painless Scripting Language
+https://www.elastic.co/guide/en/elasticsearch/painless/6.0/index.html
+https://www.elastic.co/guide/en/elasticsearch/painless/5.5/index.html
+https://www.elastic.co/guide/en/elasticsearch/painless/6.0/painless-getting-started.html
+# syntax and language features
+https://www.elastic.co/guide/en/elasticsearch/painless/6.0/painless-specification.html
+# Elasticsearch Reference [6.0] » Modules » Scripting
+https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
+# 
+https://www.elastic.co/guide/en/elasticsearch/reference/5.2/modules-scripting.html
+# Painless API Reference
+https://www.elastic.co/guide/en/elasticsearch/painless/6.0/painless-api-reference.html
+
+
+# 相当于内置函数，处理索引之前的数据
+PUT my-index/my-type/my-id?pipeline=my_pipeline_id
+{
+  "foo": "bar"
+}
+https://www.elastic.co/guide/en/elasticsearch/reference/6.0/ingest.html
+  

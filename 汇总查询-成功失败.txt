@@ -1,0 +1,55 @@
+# 聚合排序
+https://segmentfault.com/a/1190000004462048
+
+POST 
+http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_ans/_search/
+# 按 log_date、XT_CLIVER 分组，查询count(1)、count(distinct KHH)
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {"log_date": {"gte": "20170820","lte": "20171210"}}}
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 2,
+  "_source": {
+    "includes": ["collector", "log_date", "log_time", "KHH", "ip", "mac"],
+    "excludes": []
+  },
+  "stored_fields": ["collector", "log_date", "log_time", "KHH", "ip", "mac"],  
+  "script_fields": {
+    "return_no": {
+      "script": {
+        "lang": "painless",
+        "inline": "int return_no = 0; if (doc['log_type.keyword'].value == '成功处理' && doc['return_no'].value >= 0) { return_no = 1; } else { return_no = 0; } return return_no;"
+      }
+    },
+    "return_no2": {
+      "script": {
+        "lang": "painless",
+        "inline": "int return_no = 0; if (doc['log_type.keyword'].value == '成功处理' && doc['return_no'].value >= 0) { return_no = 1; } else { return_no = 0; } return return_no;"
+      }
+    }
+  },
+  "aggs": {
+    "log_date": {
+      "terms": {
+        "field": "log_date"
+      },
+      "aggs": {
+        "return_no": {
+          "terms": {
+            "field": "return_no",
+			"order": [
+				{"_count": "desc"}
+            ]
+          }
+        }
+      }
+    }
+  }
+}

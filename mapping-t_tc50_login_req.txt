@@ -1,4 +1,4 @@
-# 获取字段及类型
+﻿# 获取字段及类型
 GET
 http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_mapping/
 
@@ -6,7 +6,7 @@ http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_mapping/
 PUT my_index/_mapping/type_one?update_all_types
 
 PUT
-http://192.168.2.142:9200/tls_tc50_2/_mapping/t_tc50_login_req
+http://192.168.2.142:9200/tls_tc50_2/_mapping/t_tc50_login_req?update_all_types
 
 {
                 "properties": {

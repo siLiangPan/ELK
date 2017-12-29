@@ -1,0 +1,90 @@
+POST 
+http://192.168.2.142:9200/tls_tc50_2/t_tc50_login_req/_search/
+# 按 log_date 分桶 再按XT_CLIVER 分组，查询count(1)、count(distinct KHH)
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {"log_date": {"gte": "20170801","lte": "20171231"}}}
+      ],
+      "must_not": [],
+      "should": []
+    }
+  },
+  "from": 0,
+  "size": 0,
+  "_source": {
+    "includes": ["collector", "log_date", "log_time", "KHH", "ip", "mac", "XT_MACHINEINFO"],
+    "excludes": []
+  },
+  "stored_fields": ["collector", "log_date", "log_time", "KHH", "ip", "mac"],  
+  "aggs" : {
+        "khh_ranges" : {
+            "range" : {
+                "field" : "log_date",
+                "ranges" : [
+                    { "from" : 20170801, "to" : 20170901 },
+                    { "from" : 20170901, "to" : 20171001 },
+                    { "from" : 20171001, "to" : 20171101 },
+					{ "from" : 20171101, "to" : 20171201 },
+					{ "from" : 20171201 }
+                ]
+            },
+      "aggs": {
+        "xt_cliver": {
+          "terms": {
+            "field": "XT_CLIVER"
+          },
+              "aggs": {
+                "khh_cnt": {
+                  "cardinality": {
+                    "field": "KHH"
+                  }
+                }
+              }
+        }
+      }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------
+"aggs" : {
+        "khh_ranges" : {
+            "range" : {
+                "field" : "log_date",
+                "ranges" : [
+                    { "to" : 20170901 },
+                    { "from" : 20170901, "to" : 20171001 },
+                    { "from" : 20171001, "to" : 20171101 },
+					{ "from" : 20171101 }
+                ]
+            },
+      "aggs": {
+        "xt_cliver": {
+          "terms": {
+            "field": "XT_CLIVER"
+          },
+              "aggs": {
+                "khh_cnt": {
+                  "cardinality": {
+                    "field": "KHH"
+                  }
+                }
+              }
+        }
+      }
+        }
+    }
